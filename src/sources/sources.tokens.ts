@@ -1,0 +1,1 @@
+export const DATA_SOURCE_ADAPTERS = Symbol('DATA_SOURCE_ADAPTERS');

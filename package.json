@@ -6,10 +6,10 @@
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
-    "node": ">=24.11.0 <25",
-    "npm": ">=11.6.0 <12"
+    "node": ">=24.21.0 <25",
+    "npm": ">=11.19.0 <12"
   },
-  "packageManager": "npm@11.6.2",
+  "packageManager": "npm@11.19.0",
   "scripts": {
     "clean": "node -e \"const fs=require('node:fs'); for (const path of ['dist','tsconfig.build.tsbuildinfo']) fs.rmSync(path,{recursive:true,force:true})\"",
     "build": "npm run clean && tsc -p tsconfig.build.json",
@@ -39,6 +39,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@nestjs/cli": "12.0.8",
     "@nestjs/testing": "12.1.2",
     "@types/express": "5.0.6",
     "@types/node": "24.19.1",

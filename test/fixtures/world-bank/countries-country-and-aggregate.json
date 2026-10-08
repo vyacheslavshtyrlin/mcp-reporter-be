@@ -1,0 +1,66 @@
+[
+  {
+    "page": 1,
+    "pages": 1,
+    "per_page": "10",
+    "total": 2
+  },
+  [
+    {
+      "id": "DEU",
+      "iso2Code": "DE",
+      "name": "Germany",
+      "region": {
+        "id": "ECS",
+        "iso2code": "Z7",
+        "value": "Europe & Central Asia"
+      },
+      "adminregion": {
+        "id": "",
+        "iso2code": "",
+        "value": ""
+      },
+      "incomeLevel": {
+        "id": "HIC",
+        "iso2code": "XD",
+        "value": "High income"
+      },
+      "lendingType": {
+        "id": "LNX",
+        "iso2code": "XX",
+        "value": "Not classified"
+      },
+      "capitalCity": "Berlin",
+      "longitude": "13.4115",
+      "latitude": "52.5235"
+    },
+    {
+      "id": "WLD",
+      "iso2Code": "1W",
+      "name": "World",
+      "region": {
+        "id": "NA",
+        "iso2code": "NA",
+        "value": "Aggregates"
+      },
+      "adminregion": {
+        "id": "",
+        "iso2code": "",
+        "value": ""
+      },
+      "incomeLevel": {
+        "id": "NA",
+        "iso2code": "NA",
+        "value": "Aggregates"
+      },
+      "lendingType": {
+        "id": "",
+        "iso2code": "",
+        "value": "Aggregates"
+      },
+      "capitalCity": "",
+      "longitude": "",
+      "latitude": ""
+    }
+  ]
+]
