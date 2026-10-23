@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import type { DataSourceAdapter } from './contracts/index.js';
+import { SourceRegistry } from './source-registry.js';
 import { DATA_SOURCE_ADAPTERS } from './sources.tokens.js';
 import { WorldBankAdapter } from './world-bank/world-bank-adapter.js';
 import { WorldBankCountryCatalog } from './world-bank/world-bank-country.catalog.js';
@@ -42,7 +43,8 @@ import { WorldBankRetryPolicy } from './world-bank/world-bank-retry.policy.js';
         worldBankAdapter: WorldBankAdapter,
       ): readonly DataSourceAdapter[] => Object.freeze([worldBankAdapter]),
     },
+    SourceRegistry,
   ],
-  exports: [DATA_SOURCE_ADAPTERS],
+  exports: [SourceRegistry],
 })
 export class SourcesModule {}

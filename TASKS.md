@@ -67,4 +67,6 @@
 
 Подробные границы, архитектура, Features, Tasks, приёмка и риски зафиксированы в [`EPIC-002.md`](./EPIC-002.md).
 
-Ближайшая Task: `[ ] RPT-01 — Реализовать SourceRegistry`.
+Завершено: `[x] RPT-01 — Реализовать SourceRegistry`.
+
+Ближайшая Task: `[ ] RPT-02 — Создать DatasetsModule`.
