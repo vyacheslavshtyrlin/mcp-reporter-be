@@ -61,14 +61,12 @@
 
 ## EPIC-002 — Отчёт через MCP Streamable HTTP
 
-**Статус:** в работе, Feature 1 — Registry и каталоги.
+**Статус:** в работе, Feature 1 — Registry и каталоги завершена.
 
 **Цель:** дать AI-клиенту сквозной сценарий каталогов и выполнения `time_series`/`period_change` через `/mcp`, временно сохраняя `ReportRun` в памяти.
 
 Подробные границы, архитектура, Features, Tasks, приёмка и риски зафиксированы в [`EPIC-002.md`](./EPIC-002.md).
 
-Завершено: `[x] RPT-01 — Реализовать SourceRegistry`.
+Завершена Feature 1 — Registry и каталоги (`RPT-01`, `RPT-02`, `RPT-03`).
 
-Завершено: `[x] RPT-02 — Создать DatasetsModule`.
-
-Ближайшая Task: `[ ] RPT-03 — Протестировать registry и каталоги`.
+Следующая Feature: Feature 2 — Контракт и расчёты отчёта (`RPT-04`…`RPT-08`).
