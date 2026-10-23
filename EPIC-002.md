@@ -2,7 +2,7 @@
 
 ## Статус
 
-Согласован, реализация не начата.
+В работе, Feature 1 — Registry и каталоги.
 
 ## Цель и ценность
 
@@ -164,7 +164,7 @@ queued → running → completed
 ### Feature 1 — Registry и каталоги
 
 - [x] **RPT-01 — Реализовать `SourceRegistry`.** Внедрить `DATA_SOURCE_ADAPTERS`, проверить уникальность `sourceId`, реализовать получение адаптера и `SOURCE_NOT_FOUND`.
-- [ ] **RPT-02 — Создать `DatasetsModule`.** Через Nest CLI создать module/provider, добавить application-сервис для dataset catalog и не раскрывать конкретный адаптер потребителям.
+- [x] **RPT-02 — Создать `DatasetsModule`.** Через Nest CLI создать module/provider, добавить application-сервис для dataset catalog и не раскрывать конкретный адаптер потребителям.
 - [ ] **RPT-03 — Протестировать registry и каталоги.** Использовать Nest `TestingModule`, fake adapters и общий контракт без живой сети.
 
 ### Feature 2 — Контракт и расчёты отчёта

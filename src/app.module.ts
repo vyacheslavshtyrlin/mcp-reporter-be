@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
 import { validateEnvironment } from './config/environment.js';
+import { DatasetsModule } from './datasets/datasets.module.js';
 import { SystemModule } from './system/system.module.js';
-import { SourcesModule } from './sources/sources.module.js';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { SourcesModule } from './sources/sources.module.js';
       validate: validateEnvironment,
     }),
     SystemModule,
-    SourcesModule,
+    DatasetsModule,
   ],
 })
 export class AppModule {}
