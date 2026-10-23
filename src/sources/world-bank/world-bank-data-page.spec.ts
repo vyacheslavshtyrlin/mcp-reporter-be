@@ -14,7 +14,7 @@ function readFixture(name: string): unknown {
 
 describe('parseWorldBankDataPage', () => {
   it('validates a saved response and normalizes it to flat records', () => {
-    const page = parseWorldBankDataPage(readFixture('data-page-1.json'));
+    const page = parseWorldBankDataPage(readFixture('data-page-1.json'), '2');
 
     expect(page.metadata).toEqual({
       page: 1,
@@ -50,7 +50,7 @@ describe('parseWorldBankDataPage', () => {
       obs_status: 'E',
     };
 
-    const page = parseWorldBankDataPage(payload);
+    const page = parseWorldBankDataPage(payload, '2');
 
     expect(page.metadata.perPage).toBe(1);
     expect(page.records[0]).toMatchObject({
@@ -61,7 +61,10 @@ describe('parseWorldBankDataPage', () => {
 
   it('turns an API error payload into a domain error even with HTTP 200', () => {
     expect(() =>
-      parseWorldBankDataPage(readFixture('api-error-invalid-country.json')),
+      parseWorldBankDataPage(
+        readFixture('api-error-invalid-country.json'),
+        '2',
+      ),
     ).toThrowError(
       expect.objectContaining({
         code: SOURCE_ERROR_CODE.SOURCE_RESPONSE_INVALID,
@@ -102,7 +105,7 @@ describe('parseWorldBankDataPage', () => {
     },
   ])('rejects $name', ({ payload }) => {
     try {
-      parseWorldBankDataPage(payload);
+      parseWorldBankDataPage(payload, '2');
       expect.unreachable('The malformed payload must be rejected');
     } catch (error: unknown) {
       expect(isSourceError(error)).toBe(true);
@@ -120,10 +123,40 @@ describe('parseWorldBankDataPage', () => {
     ];
     payload[0].page = 3;
 
-    expect(() => parseWorldBankDataPage(payload)).toThrowError(
+    expect(() => parseWorldBankDataPage(payload, '2')).toThrowError(
       expect.objectContaining({
         code: SOURCE_ERROR_CODE.SOURCE_RESPONSE_INVALID,
         context: expect.objectContaining({ page: 3, pages: 2 }),
+      }),
+    );
+  });
+
+  it('normalizes a null sourceid from a multi-indicator response', () => {
+    const page = parseWorldBankDataPage(
+      readFixture('data-page-multiple-indicators.json'),
+      '2',
+    );
+
+    expect(page.metadata.sourceDatasetId).toBe('2');
+    expect(page.records).toHaveLength(2);
+    expect(page.records.map((record) => record.sourceDatasetId)).toEqual([
+      '2',
+      '2',
+    ]);
+  });
+
+  it('rejects a non-null sourceid different from the requested dataset', () => {
+    expect(() =>
+      parseWorldBankDataPage(readFixture('data-page-1.json'), '99'),
+    ).toThrowError(
+      expect.objectContaining({
+        code: SOURCE_ERROR_CODE.SOURCE_RESPONSE_INVALID,
+        context: {
+          sourceId: 'world-bank',
+          page: 1,
+          expectedSourceDatasetId: '99',
+          actualSourceDatasetId: '2',
+        },
       }),
     );
   });

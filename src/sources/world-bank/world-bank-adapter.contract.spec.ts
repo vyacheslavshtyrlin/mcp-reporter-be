@@ -245,6 +245,47 @@ describe('WorldBankAdapter contract', () => {
     expect(Date.parse(batch.provenance.retrievedAt)).not.toBeNaN();
   });
 
+  it('returns multiple indicators when World Bank omits sourceid', async () => {
+    const client = new FixtureWorldBankClient(
+      readFixture('countries-country-and-aggregate.json'),
+      { 1: readFixture('data-page-multiple-indicators.json') },
+    );
+    const created = await createAdapter(client);
+    modules.push(created.module);
+    const query = validQuery();
+    const multiIndicatorQuery: DataQuery = {
+      ...query,
+      filters: [
+        { field: 'countryCode', operator: 'eq', value: 'DEU' },
+        {
+          field: 'indicatorCode',
+          operator: 'in',
+          value: ['SP.POP.TOTL', 'FP.CPI.TOTL.ZG'],
+        },
+      ],
+      period: { field: 'year', fromYear: 2020, toYear: 2020 },
+    };
+
+    const batch = await created.adapter.fetchRecords(
+      multiIndicatorQuery,
+      new AbortController().signal,
+    );
+
+    expect(batch.records).toHaveLength(2);
+    expect(batch.coverage).toEqual({
+      expectedPoints: 2,
+      availablePoints: 2,
+      missingPoints: 0,
+    });
+    expect(batch.provenance.sourceDatasetId).toBe('2');
+    expect(client.requests.at(-1)?.pathSegments).toEqual([
+      'country',
+      'DEU',
+      'indicator',
+      'SP.POP.TOTL;FP.CPI.TOTL.ZG',
+    ]);
+  });
+
   it('reports null and absent grid points without inventing records', async () => {
     const onlyPage = readFixture('data-page-1.json') as [
       Record<string, unknown>,

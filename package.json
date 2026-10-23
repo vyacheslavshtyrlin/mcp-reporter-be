@@ -26,7 +26,7 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run test:e2e && npm run build"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:cov && npm run test:e2e && npm run build"
   },
   "dependencies": {
     "@nestjs/common": "12.1.2",

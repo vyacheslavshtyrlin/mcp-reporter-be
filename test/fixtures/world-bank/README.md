@@ -1,6 +1,6 @@
 # World Bank API fixtures
 
-Минимальные неизменяемые ответы World Bank Indicators API для разработки и тестирования адаптера. Получены 8 октября 2026 года. В production-коде нельзя предполагать, что значения показателей или `lastupdated` останутся такими же.
+Минимальные неизменяемые ответы World Bank Indicators API для разработки и тестирования адаптера. Получены 8–9 октября 2026 года. В production-коде нельзя предполагать, что значения показателей или `lastupdated` останутся такими же.
 
 ## Источники
 
@@ -8,6 +8,7 @@
 | --- | --- |
 | `data-page-1.json` | `https://api.worldbank.org/v2/country/DEU/indicator/SP.POP.TOTL?source=2&date=2020%3A2021&format=json&per_page=1&page=1&footnote=y` |
 | `data-page-2.json` | `https://api.worldbank.org/v2/country/DEU/indicator/SP.POP.TOTL?source=2&date=2020%3A2021&format=json&per_page=1&page=2&footnote=y` |
+| `data-page-multiple-indicators.json` | `https://api.worldbank.org/v2/country/DEU/indicator/SP.POP.TOTL%3BFP.CPI.TOTL.ZG?source=2&date=2020&format=json&per_page=1000&page=1&footnote=y` |
 | `countries-country-and-aggregate.json` | `https://api.worldbank.org/v2/country/DEU%3BWLD?format=json&per_page=10` |
 | `indicator-sp-pop-totl.json` | `https://api.worldbank.org/v2/indicator/SP.POP.TOTL?source=2&format=json` |
 | `api-error-invalid-country.json` | `https://api.worldbank.org/v2/country/NOT_A_CODE?format=json` |
@@ -23,6 +24,7 @@
 - Год приходит строкой, числовое значение — числом или `null`.
 - `unit`, `obs_status` и `footnote` могут быть пустыми строками.
 - Metadata показателя содержит пустой `unit`; единицу и семантический тип нельзя надёжно выводить только из этого поля.
+- Data endpoint возвращает `metadata.sourceid = null` для запроса нескольких показателей, хотя запрос явно содержит `source=2`; адаптер должен сверять ненулевое значение либо нормализовать `null` к запрошенному source ID.
 - Реальная страна `DEU` имеет обычный регион, а агрегат `WLD` — `region.value = "Aggregates"` и `region.id = "NA"`.
 - Ошибка неизвестной страны возвращена с HTTP 200 и payload другой формы: `[{ "message": [...] }]`.
 

@@ -251,4 +251,21 @@ describe('WorldBankDataLoader', () => {
       () => new WorldBankDataLoader(new QueueJsonClient([]), { maxRecords: 0 }),
     ).toThrow('positive integer');
   });
+
+  it('rejects a data request without a source dataset ID', async () => {
+    const client = new QueueJsonClient([]);
+    const loader = new WorldBankDataLoader(client);
+    const { source: _source, ...queryWithoutSource } = request.query ?? {};
+
+    await expect(
+      loader.loadAll(
+        { ...request, query: queryWithoutSource },
+        new AbortController().signal,
+      ),
+    ).rejects.toMatchObject({
+      code: SOURCE_ERROR_CODE.INVALID_REPORT_DEFINITION,
+      context: { sourceId: 'world-bank' },
+    });
+    expect(client.requests).toHaveLength(0);
+  });
 });

@@ -12,7 +12,7 @@ const metadataSchema = z.object({
   pages: z.number().int().positive(),
   per_page: positiveIntegerFromNumberOrString,
   total: z.number().int().nonnegative(),
-  sourceid: z.string().min(1),
+  sourceid: z.string().min(1).nullable(),
   lastupdated: z.iso.date(),
 });
 
@@ -73,7 +73,10 @@ export interface WorldBankDataPage {
   readonly records: readonly WorldBankRecord[];
 }
 
-export function parseWorldBankDataPage(payload: unknown): WorldBankDataPage {
+export function parseWorldBankDataPage(
+  payload: unknown,
+  expectedSourceDatasetId: string,
+): WorldBankDataPage {
   const apiError = apiErrorSchema.safeParse(payload);
 
   if (apiError.success) {
@@ -111,6 +114,24 @@ export function parseWorldBankDataPage(payload: unknown): WorldBankDataPage {
   const [metadata, observations] = result.data;
 
   if (
+    metadata.sourceid !== null &&
+    metadata.sourceid !== expectedSourceDatasetId
+  ) {
+    throw new SourceError(
+      SOURCE_ERROR_CODE.SOURCE_RESPONSE_INVALID,
+      'World Bank returned data from a different dataset',
+      {
+        context: {
+          sourceId: 'world-bank',
+          page: metadata.page,
+          expectedSourceDatasetId,
+          actualSourceDatasetId: metadata.sourceid,
+        },
+      },
+    );
+  }
+
+  if (
     metadata.page > metadata.pages ||
     observations.length > metadata.per_page
   ) {
@@ -135,12 +156,12 @@ export function parseWorldBankDataPage(payload: unknown): WorldBankDataPage {
       pages: metadata.pages,
       perPage: metadata.per_page,
       total: metadata.total,
-      sourceDatasetId: metadata.sourceid,
+      sourceDatasetId: expectedSourceDatasetId,
       lastUpdated: metadata.lastupdated,
     },
     records: observations.map((observation) => ({
       sourceId: 'world-bank',
-      sourceDatasetId: metadata.sourceid,
+      sourceDatasetId: expectedSourceDatasetId,
       countryCode: observation.countryiso3code,
       indicatorCode: observation.indicator.id,
       year: Number(observation.date),

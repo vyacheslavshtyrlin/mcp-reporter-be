@@ -56,11 +56,17 @@ export class WorldBankDataLoader {
     request: WorldBankHttpRequest,
     signal: AbortSignal,
   ): Promise<WorldBankSeries> {
+    const expectedSourceDatasetId = getRequestedSourceDatasetId(request);
     const records: WorldBankRecord[] = [];
     let firstMetadata: WorldBankPageMetadata | undefined;
 
     for (let pageNumber = 1; ; pageNumber += 1) {
-      const page = await this.loadPage(request, pageNumber, signal);
+      const page = await this.loadPage(
+        request,
+        pageNumber,
+        expectedSourceDatasetId,
+        signal,
+      );
 
       if (firstMetadata === undefined) {
         firstMetadata = page.metadata;
@@ -126,6 +132,7 @@ export class WorldBankDataLoader {
   private async loadPage(
     request: WorldBankHttpRequest,
     pageNumber: number,
+    expectedSourceDatasetId: string,
     signal: AbortSignal,
   ): Promise<WorldBankDataPage> {
     return this.retryPolicy.execute(async () => {
@@ -141,7 +148,7 @@ export class WorldBankDataLoader {
         signal,
       );
 
-      return parseWorldBankDataPage(payload);
+      return parseWorldBankDataPage(payload, expectedSourceDatasetId);
     }, signal);
   }
 
@@ -160,6 +167,23 @@ export class WorldBankDataLoader {
       );
     }
   }
+}
+
+function getRequestedSourceDatasetId(request: WorldBankHttpRequest): string {
+  const source = request.query?.source;
+
+  if (
+    (typeof source !== 'string' && typeof source !== 'number') ||
+    String(source).length === 0
+  ) {
+    throw new SourceError(
+      SOURCE_ERROR_CODE.INVALID_REPORT_DEFINITION,
+      'World Bank data request requires a source dataset ID',
+      { context: { sourceId: 'world-bank' } },
+    );
+  }
+
+  return String(source);
 }
 
 function assertMatchingMetadata(
