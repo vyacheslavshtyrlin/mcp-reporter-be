@@ -2,7 +2,7 @@
 
 ## Статус
 
-В работе, Feature 2 — Контракт и расчёты отчёта завершена.
+В работе, Feature 3 — Выполнение в памяти завершена.
 
 ## Цель и ценность
 
@@ -177,11 +177,11 @@ queued → running → completed
 
 ### Feature 3 — Выполнение в памяти
 
-- [ ] **EXEC-01 — Создать `ExecutionModule`.** Сгенерировать Nest module/providers, определить `ReportRun` и допустимые переходы состояния.
-- [ ] **EXEC-02 — Реализовать in-memory repository.** Хранить неизменяемые completed snapshots, поддержать получение по `runId` и пагинацию строк.
-- [ ] **EXEC-03 — Реализовать `ReportExecutor`.** Получить адаптер, загрузить полный `RecordBatch`, выполнить нужную чистую функцию и атомарно опубликовать результат в памяти.
-- [ ] **EXEC-04 — Добавить `InlineDispatcher` и deadline.** Передать `AbortSignal` по всей цепочке и не смешивать диспетчеризацию с расчётами.
-- [ ] **EXEC-05 — Протестировать orchestration.** Проверить completed/failed, отсутствие partial result, unknown runId и истечение deadline.
+- [x] **EXEC-01 — Создать `ExecutionModule`.** Сгенерировать Nest module/providers, определить `ReportRun` и допустимые переходы состояния.
+- [x] **EXEC-02 — Реализовать in-memory repository.** Хранить неизменяемые completed snapshots, поддержать получение по `runId` и пагинацию строк.
+- [x] **EXEC-03 — Реализовать `ReportExecutor`.** Получить адаптер, загрузить полный `RecordBatch`, выполнить нужную чистую функцию и атомарно опубликовать результат в памяти.
+- [x] **EXEC-04 — Добавить `InlineDispatcher` и deadline.** Передать `AbortSignal` по всей цепочке и не смешивать диспетчеризацию с расчётами.
+- [x] **EXEC-05 — Протестировать orchestration.** Проверить completed/failed, отсутствие partial result, unknown runId и истечение deadline.
 
 ### Feature 4 — MCP Streamable HTTP
 
