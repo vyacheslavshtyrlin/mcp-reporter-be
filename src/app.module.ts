@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validateEnvironment } from './config/environment.js';
 import { DatasetsModule } from './datasets/datasets.module.js';
 import { SystemModule } from './system/system.module.js';
+import { ReportsModule } from './reports/reports.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SystemModule } from './system/system.module.js';
     }),
     SystemModule,
     DatasetsModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
