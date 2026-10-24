@@ -29,6 +29,8 @@
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:cov && npm run test:e2e && npm run build"
   },
   "dependencies": {
+    "@modelcontextprotocol/node": "2.1.2",
+    "@modelcontextprotocol/server": "2.4.0",
     "@nestjs/common": "12.1.2",
     "@nestjs/config": "12.0.1",
     "@nestjs/core": "12.1.2",
@@ -39,6 +41,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "2.4.0",
     "@nestjs/cli": "12.0.8",
     "@nestjs/testing": "12.1.2",
     "@types/express": "5.0.6",

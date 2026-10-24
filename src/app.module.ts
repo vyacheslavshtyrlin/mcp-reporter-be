@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validateEnvironment } from './config/environment.js';
 import { DatasetsModule } from './datasets/datasets.module.js';
 import { ExecutionModule } from './execution/execution.module.js';
+import { McpModule } from './mcp/mcp.module.js';
 import { ReportsModule } from './reports/reports.module.js';
 import { SystemModule } from './system/system.module.js';
 
@@ -18,6 +19,7 @@ import { SystemModule } from './system/system.module.js';
     DatasetsModule,
     ReportsModule,
     ExecutionModule,
+    McpModule,
   ],
 })
 export class AppModule {}

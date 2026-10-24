@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { ReportDefinitionService } from '../reports/report-definition.service.js';
 import { ReportEngineService } from '../reports/report-engine.service.js';
@@ -12,9 +12,13 @@ import { InMemoryReportRunRepository } from './in-memory-report-run-repository.j
 @Injectable()
 export class ReportExecutor {
   constructor(
+    @Inject(InMemoryReportRunRepository)
     private readonly runs: InMemoryReportRunRepository,
+    @Inject(SourceRegistry)
     private readonly sources: SourceRegistry,
+    @Inject(ReportDefinitionService)
     private readonly definitions: ReportDefinitionService,
+    @Inject(ReportEngineService)
     private readonly engine: ReportEngineService,
   ) {}
 

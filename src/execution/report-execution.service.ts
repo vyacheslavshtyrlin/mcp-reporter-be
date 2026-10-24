@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type { ReportDefinitionInput } from '../reports/report.models.js';
 import type {
@@ -11,7 +11,9 @@ import { InlineDispatcher } from './inline-dispatcher.js';
 @Injectable()
 export class ReportExecutionService {
   constructor(
+    @Inject(InMemoryReportRunRepository)
     private readonly runs: InMemoryReportRunRepository,
+    @Inject(InlineDispatcher)
     private readonly dispatcher: InlineDispatcher,
   ) {}
 

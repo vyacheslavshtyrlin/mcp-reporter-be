@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type {
   CursorPage,
@@ -33,7 +33,9 @@ export class WorldBankAdapter implements DataSourceAdapter {
   readonly sourceId = WORLD_BANK_SOURCE_ID;
 
   constructor(
+    @Inject(WorldBankDataLoader)
     private readonly dataLoader: WorldBankDataLoader,
+    @Inject(WorldBankCountryCatalog)
     private readonly countryCatalog: WorldBankCountryCatalog,
   ) {}
 

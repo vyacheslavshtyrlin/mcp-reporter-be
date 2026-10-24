@@ -2,7 +2,7 @@
 
 ## Статус
 
-В работе, Feature 3 — Выполнение в памяти завершена.
+В работе, Feature 4 — MCP Streamable HTTP завершена; следующий шаг — итоговый review Epic.
 
 ## Цель и ценность
 
@@ -185,13 +185,13 @@ queued → running → completed
 
 ### Feature 4 — MCP Streamable HTTP
 
-- [ ] **MCP-01 — Проверить и закрепить MCP SDK v2.** Сверить актуальные версии `@modelcontextprotocol/server`, `@modelcontextprotocol/client` и нужного HTTP middleware с Node.js, TypeScript, Zod и NestJS; не использовать v1 imports.
-- [ ] **MCP-02 — Создать `McpModule` и `/mcp`.** Сгенерировать Nest module/provider, подключить официальный Streamable HTTP handler и корректное закрытие transport при shutdown.
-- [ ] **MCP-03 — Добавить catalog tools.** Реализовать четыре catalog tool через `DatasetsModule` с Zod input/output и ограниченными structured results.
-- [ ] **MCP-04 — Добавить `run_report`.** Проверить definition, выполнить inline и вернуть `runId`, статус, coverage, warnings и ограниченную таблицу.
-- [ ] **MCP-05 — Добавить `get_report_run`.** Возвращать статус и страницы строк по server cursor.
-- [ ] **MCP-06 — Добавить mapping ошибок.** Сохранить стабильный code, безопасное сообщение и retryability без раскрытия stack trace или внешнего payload.
-- [ ] **MCP-07 — Добавить MCP e2e и ручную проверку.** Поднять настоящее Nest-приложение, подключить официальный MCP client, вызвать tools через `/mcp` и проверить shutdown.
+- [x] **MCP-01 — Проверить и закрепить MCP SDK v2.** Сверить актуальные версии `@modelcontextprotocol/server`, `@modelcontextprotocol/client` и нужного HTTP middleware с Node.js, TypeScript, Zod и NestJS; не использовать v1 imports.
+- [x] **MCP-02 — Создать `McpModule` и `/mcp`.** Сгенерировать Nest module/provider, подключить официальный Streamable HTTP handler и корректное закрытие transport при shutdown.
+- [x] **MCP-03 — Добавить catalog tools.** Реализовать четыре catalog tool через `DatasetsModule` с Zod input/output и ограниченными structured results.
+- [x] **MCP-04 — Добавить `run_report`.** Проверить definition, выполнить inline и вернуть `runId`, статус, coverage, warnings и ограниченную таблицу.
+- [x] **MCP-05 — Добавить `get_report_run`.** Возвращать статус и страницы строк по server cursor.
+- [x] **MCP-06 — Добавить mapping ошибок.** Сохранить стабильный code, безопасное сообщение и retryability без раскрытия stack trace или внешнего payload.
+- [x] **MCP-07 — Добавить MCP e2e и ручную проверку.** Поднять настоящее Nest-приложение, подключить официальный MCP client, вызвать tools через `/mcp` и проверить shutdown.
 
 ## Стратегия тестирования
 

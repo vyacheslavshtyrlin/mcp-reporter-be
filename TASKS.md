@@ -61,7 +61,7 @@
 
 ## EPIC-002 — Отчёт через MCP Streamable HTTP
 
-**Статус:** в работе, Feature 3 — Выполнение в памяти завершена.
+**Статус:** в работе, Feature 4 — MCP Streamable HTTP завершена; следующий шаг — итоговый review Epic.
 
 **Цель:** дать AI-клиенту сквозной сценарий каталогов и выполнения `time_series`/`period_change` через `/mcp`, временно сохраняя `ReportRun` в памяти.
 
@@ -73,4 +73,6 @@
 
 Завершена Feature 3 — Выполнение в памяти (`EXEC-01`…`EXEC-05`).
 
-Следующая Feature: Feature 4 — MCP Streamable HTTP (`MCP-01`…`MCP-06`).
+Завершена Feature 4 — MCP Streamable HTTP (`MCP-01`…`MCP-07`).
+
+Следующий шаг: итоговый review и приёмка EPIC-002.

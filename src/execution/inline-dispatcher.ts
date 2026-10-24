@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import {
   DEFAULT_REPORT_DEADLINE_MS,
@@ -8,7 +8,9 @@ import { ReportExecutor } from './report-executor.js';
 
 @Injectable()
 export class InlineDispatcher {
-  constructor(private readonly executor: ReportExecutor) {}
+  constructor(
+    @Inject(ReportExecutor) private readonly executor: ReportExecutor,
+  ) {}
 
   async submit(runId: string, callerSignal?: AbortSignal): Promise<void> {
     const deadline = new ExecutionDeadline(

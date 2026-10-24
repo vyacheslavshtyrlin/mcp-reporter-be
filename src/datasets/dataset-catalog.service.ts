@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import type {
   CursorPage,
@@ -17,7 +17,9 @@ export interface DatasetCatalogSummary extends DatasetSummary {
 
 @Injectable()
 export class DatasetCatalogService {
-  constructor(private readonly sources: SourceRegistry) {}
+  constructor(
+    @Inject(SourceRegistry) private readonly sources: SourceRegistry,
+  ) {}
 
   async listDatasets(
     sourceId: string,
