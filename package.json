@@ -13,20 +13,22 @@
   "scripts": {
     "clean": "node -e \"const fs=require('node:fs'); for (const path of ['dist','tsconfig.build.tsbuildinfo']) fs.rmSync(path,{recursive:true,force:true})\"",
     "build": "npm run clean && tsc -p tsconfig.build.json",
+    "docs:check": "tsx harness/check-markdown-links.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "start": "tsx src/main.ts",
     "start:dev": "tsx watch src/main.ts",
     "start:debug": "node --inspect --import tsx src/main.ts",
     "start:prod": "node dist/main.js",
-    "lint": "oxlint src test vitest.config.ts vitest.config.e2e.ts",
-    "lint:fix": "oxlint --fix src test vitest.config.ts vitest.config.e2e.ts",
+    "lint": "oxlint src test harness vitest.config.ts vitest.config.e2e.ts",
+    "lint:fix": "oxlint --fix src test harness vitest.config.ts vitest.config.e2e.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:cov && npm run test:e2e && npm run build"
+    "verify": "tsx harness/verify.ts",
+    "check": "npm run verify -- epic"
   },
   "dependencies": {
     "@modelcontextprotocol/node": "2.1.2",

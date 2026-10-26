@@ -11,9 +11,13 @@
 
 - [`mcp_reporting_design.md`](../mcp_reporting_design.md) — основной источник требований, архитектуры и границ MVP.
 - [`TASKS.md`](../TASKS.md) — актуальный backlog со статусами Epic, Feature и Task.
-- [`EPIC-002.md`](../EPIC-002.md) — подробный план, контракты и критерии приёмки текущего Epic.
+- [`EPIC-002.md`](../EPIC-002.md) — план, контракты и критерии приёмки завершённого MCP Epic.
+- [`EPIC-003.md`](../EPIC-003.md) — согласованные границы, задачи и критерии приёмки текущего PostgreSQL Epic.
 - [`POST_MVP_ROADMAP.md`](../POST_MVP_ROADMAP.md) — гипотезы развития после MVP; это не согласованный backlog.
 - [`AGENTS.md`](../AGENTS.md) — правила разработки, обучения, тестирования и обязательного review.
+- [`process/AGENT_WORKFLOW.md`](./process/AGENT_WORKFLOW.md) — роли агентов, состояния Feature, approval gates и контракты делегации.
+- [`process/templates/`](./process/templates/) — шаблоны требований, технического дизайна, декомпозиции и review; они не являются отдельным backlog.
+- [`../harness/README.md`](../harness/README.md) — единый interface проверок Task, Feature и Epic.
 
 ## Контракты и тестовые данные
 

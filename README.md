@@ -90,9 +90,10 @@ npm run build
 
 - `EPIC-001` — интеграция World Bank: завершена;
 - `EPIC-002` — отчёты через MCP Streamable HTTP: завершён, итоговый review пройден;
-- PostgreSQL, Prisma, Docker, очередь и второй источник не входят в текущую реализацию.
+- `EPIC-003` — PostgreSQL persistence: согласован, реализация ещё не начата;
+- очередь, worker-процесс и второй источник не входят в текущий Epic.
 
-Актуальные Task и их статусы находятся в [`TASKS.md`](./TASKS.md). Детали текущего Epic — в [`EPIC-002.md`](./EPIC-002.md).
+Актуальные Task и их статусы находятся в [`TASKS.md`](./TASKS.md). Детали текущего Epic — в [`EPIC-003.md`](./EPIC-003.md).
 
 ## Документация
 
@@ -102,7 +103,8 @@ npm run build
 | [Использование сервиса](./docs/USAGE.md)                    | MCP workflow, параметры и пример отчёта              |
 | [Архитектура и требования](./mcp_reporting_design.md)       | Канонический design doc и границы MVP                |
 | [Задачи](./TASKS.md)                                        | Актуальный backlog и статусы Epic/Feature/Task       |
-| [EPIC-002](./EPIC-002.md)                                   | Контракты и приёмка текущего Epic                    |
+| [EPIC-002](./EPIC-002.md)                                   | Контракты и приёмка завершённого MCP Epic            |
+| [EPIC-003](./EPIC-003.md)                                   | План и приёмка текущего PostgreSQL Epic              |
 | [Post-MVP roadmap](./POST_MVP_ROADMAP.md)                   | Возможные направления после MVP                      |
 | [Правила разработки](./AGENTS.md)                           | Процесс работы, архитектурные правила и quality gate |
 | [Контракты источников](./src/sources/contracts/README.md)   | Общий интерфейс адаптеров данных                     |
