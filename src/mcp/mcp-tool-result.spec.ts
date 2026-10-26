@@ -111,4 +111,28 @@ describe('executeMcpTool', () => {
       },
     });
   });
+
+  it('preserves retryability for a temporary execution error', async () => {
+    const result = await executeMcpTool(
+      async () =>
+        Promise.reject(
+          new ExecutionError(
+            EXECUTION_ERROR_CODE.REPORT_RUN_CAPACITY_EXCEEDED,
+            'Report run capacity is temporarily exhausted',
+            { retryable: true },
+          ),
+        ),
+      () => 'unused',
+      signal,
+    );
+
+    expect(result.structuredContent).toEqual({
+      ok: false,
+      error: {
+        code: EXECUTION_ERROR_CODE.REPORT_RUN_CAPACITY_EXCEEDED,
+        message: 'Report run capacity is temporarily exhausted',
+        retryable: true,
+      },
+    });
+  });
 });

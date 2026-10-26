@@ -138,6 +138,69 @@ describe('MCP Streamable HTTP transport (e2e)', () => {
     });
   });
 
+  it('returns period change for the exact endpoint years through MCP', async () => {
+    const result = await call('run_report', {
+      definition: reportDefinition({
+        kind: 'period_change',
+        filters: [{ field: 'countryCode', operator: 'eq', value: 'DEU' }],
+        measures: [{ id: 'RATE' }],
+      }),
+      limit: 10,
+    });
+
+    expect(result).toMatchObject({
+      ok: true,
+      data: {
+        run: {
+          status: 'completed',
+          result: {
+            kind: 'period_change',
+            coverage: {
+              expectedPoints: 3,
+              availablePoints: 2,
+              missingPoints: 1,
+            },
+            warnings: [
+              {
+                code: 'MISSING_OBSERVATION',
+                recordKey: {
+                  countryCode: 'DEU',
+                  indicatorCode: 'RATE',
+                  year: 2022,
+                },
+                details: { reason: 'null' },
+              },
+            ],
+          },
+        },
+        rows: [
+          {
+            group: { countryCode: 'DEU' },
+            measureId: 'RATE',
+            start: { status: 'available', year: 2020, value: 5 },
+            end: {
+              status: 'unavailable',
+              year: 2022,
+              value: null,
+              reason: 'VALUE_NULL',
+            },
+            change: {
+              status: 'unavailable',
+              kind: 'percentage_points',
+              reason: 'END_VALUE_NULL',
+            },
+            relativeChangePercent: {
+              status: 'unavailable',
+              kind: 'relative_percent',
+              reason: 'END_VALUE_NULL',
+            },
+          },
+        ],
+        nextCursor: null,
+      },
+    });
+  });
+
   it('returns a stable tool error for an unknown run', async () => {
     const result = await client.callTool({
       name: 'get_report_run',
@@ -291,7 +354,7 @@ function fixtureAdapter(cancellation: CancellationProbe): DataSourceAdapter {
     listDimensionValues: vi.fn(async () => dimensionPage),
     listMeasures: vi.fn(async () => measurePage),
     fetchRecords: vi.fn<DataSourceAdapter['fetchRecords']>(
-      async (_query, signal) => {
+      async (query, signal) => {
         const pending = cancellation.pending;
         if (pending !== undefined) {
           cancellation.pending = undefined;
@@ -308,14 +371,45 @@ function fixtureAdapter(cancellation: CancellationProbe): DataSourceAdapter {
           });
         }
 
-        return recordBatch([
+        const records = [
           observation('DEU', 'POP', 2020, 100),
           observation('DEU', 'POP', 2021, 110),
           observation('DEU', 'POP', 2022, 120),
           observation('FIN', 'POP', 2020, 200),
           observation('FIN', 'POP', 2021, 210),
           observation('FIN', 'POP', 2022, 220),
-        ]);
+          observation('DEU', 'RATE', 2020, 5),
+          observation('DEU', 'RATE', 2021, 6),
+          observation('DEU', 'RATE', 2022, null),
+        ].filter(
+          (record) =>
+            typeof record.year === 'number' &&
+            record.year >= query.period.fromYear &&
+            record.year <= query.period.toYear &&
+            query.filters.every((filter) =>
+              filter.operator === 'eq'
+                ? record[filter.field] === filter.value
+                : filter.value.some((value) => record[filter.field] === value),
+            ),
+        );
+
+        return recordBatch(records, {
+          warnings: records.flatMap((record) =>
+            record.value === null
+              ? [
+                  {
+                    code: 'MISSING_OBSERVATION' as const,
+                    recordKey: {
+                      countryCode: record.countryCode ?? null,
+                      indicatorCode: record.indicatorCode ?? null,
+                      year: record.year ?? null,
+                    },
+                    details: { reason: 'null' },
+                  },
+                ]
+              : [],
+          ),
+        });
       },
     ),
   };

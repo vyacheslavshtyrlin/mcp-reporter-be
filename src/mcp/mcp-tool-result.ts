@@ -59,7 +59,11 @@ function toSafeError(error: unknown, signal: AbortSignal): McpSafeError {
   }
 
   if (error instanceof ExecutionError) {
-    return { code: error.code, message: error.message, retryable: false };
+    return {
+      code: error.code,
+      message: error.message,
+      retryable: error.retryable,
+    };
   }
 
   return {

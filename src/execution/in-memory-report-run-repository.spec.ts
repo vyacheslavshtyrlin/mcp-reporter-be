@@ -8,6 +8,8 @@ import { EXECUTION_ERROR_CODE } from './execution.error.js';
 import { InMemoryReportRunRepository } from './in-memory-report-run-repository.js';
 
 describe('InMemoryReportRunRepository', () => {
+  const capacity = 100;
+
   it('enforces queued to running to completed transitions', () => {
     const repository = new InMemoryReportRunRepository();
     const queued = repository.create(reportDefinition());
@@ -57,6 +59,51 @@ describe('InMemoryReportRunRepository', () => {
     ).toThrowError(
       expect.objectContaining({
         code: EXECUTION_ERROR_CODE.INVALID_REPORT_RUN_PAGE,
+      }),
+    );
+  });
+
+  it('evicts the oldest terminal run when capacity is reached', () => {
+    const repository = new InMemoryReportRunRepository();
+    const first = repository.create(reportDefinition());
+    repository.claim(first.id);
+    repository.fail(first.id, {
+      code: EXECUTION_ERROR_CODE.REPORT_EXECUTION_FAILED,
+      message: 'Failed for retention test',
+      retryable: false,
+    });
+
+    for (let index = 1; index < capacity; index += 1) {
+      const run = repository.create(reportDefinition());
+      repository.claim(run.id);
+      repository.fail(run.id, {
+        code: EXECUTION_ERROR_CODE.REPORT_EXECUTION_FAILED,
+        message: 'Failed for retention test',
+        retryable: false,
+      });
+    }
+
+    const newest = repository.create(reportDefinition());
+
+    expect(() => repository.get(first.id)).toThrowError(
+      expect.objectContaining({
+        code: EXECUTION_ERROR_CODE.REPORT_RUN_NOT_FOUND,
+      }),
+    );
+    expect(repository.get(newest.id).status).toBe('queued');
+  });
+
+  it('rejects a new run when active runs occupy the entire capacity', () => {
+    const repository = new InMemoryReportRunRepository();
+
+    for (let index = 0; index < capacity; index += 1) {
+      repository.create(reportDefinition());
+    }
+
+    expect(() => repository.create(reportDefinition())).toThrowError(
+      expect.objectContaining({
+        code: 'REPORT_RUN_CAPACITY_EXCEEDED',
+        retryable: true,
       }),
     );
   });

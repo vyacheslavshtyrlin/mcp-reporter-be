@@ -107,6 +107,7 @@ export class ReportDefinitionService {
       return measure;
     });
 
+    assertGroupFieldsDoNotSelectMeasures(definition, measures);
     assertSort(definition, fieldsByName);
     const filters = addMeasureSelectorFilters(definition.filters, measures);
     assertFilters(filters, fieldsByName, schema);
@@ -122,6 +123,27 @@ export class ReportDefinitionService {
     };
 
     return { definition, schema, measures, query };
+  }
+}
+
+function assertGroupFieldsDoNotSelectMeasures(
+  definition: ReportDefinitionInput,
+  measures: readonly MeasureDefinition[],
+): void {
+  const selectorFields = new Set(
+    measures.flatMap((measure) =>
+      measure.selector === undefined ? [] : [measure.selector.field],
+    ),
+  );
+  const conflictingField = definition.groupBy.find((field) =>
+    selectorFields.has(field),
+  );
+
+  if (conflictingField !== undefined) {
+    throw invalidDefinition(
+      'Measure selector fields cannot also be report group fields',
+      { field: conflictingField },
+    );
   }
 }
 

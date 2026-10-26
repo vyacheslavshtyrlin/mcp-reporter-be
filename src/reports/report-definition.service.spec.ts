@@ -161,6 +161,12 @@ describe('ReportDefinitionService', () => {
       code: SOURCE_ERROR_CODE.INVALID_REPORT_DEFINITION,
     },
     {
+      name: 'a measure selector used as a group field',
+      definition: reportDefinition({ groupBy: ['indicatorCode'] }),
+      schema: REPORT_TEST_SCHEMA,
+      code: SOURCE_ERROR_CODE.INVALID_REPORT_DEFINITION,
+    },
+    {
       name: 'a selector for an unknown field',
       definition: reportDefinition({ measures: [{ id: 'POP' }] }),
       schema: {

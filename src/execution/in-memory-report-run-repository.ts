@@ -19,12 +19,14 @@ import type {
 } from './execution.models.js';
 
 const MAX_PAGE_SIZE = 100;
+const MAX_RETAINED_RUNS = 100;
 
 @Injectable()
 export class InMemoryReportRunRepository {
   private readonly runs = new Map<string, ReportRun>();
 
   create(definition: ReportDefinitionInput): ReportRun {
+    this.makeRoomForRun();
     const run = immutable<ReportRun>({
       id: randomUUID(),
       definition,
@@ -33,6 +35,25 @@ export class InMemoryReportRunRepository {
     });
     this.runs.set(run.id, run);
     return run;
+  }
+
+  private makeRoomForRun(): void {
+    if (this.runs.size < MAX_RETAINED_RUNS) {
+      return;
+    }
+
+    for (const [runId, run] of this.runs) {
+      if (run.status === 'completed' || run.status === 'failed') {
+        this.runs.delete(runId);
+        return;
+      }
+    }
+
+    throw new ExecutionError(
+      EXECUTION_ERROR_CODE.REPORT_RUN_CAPACITY_EXCEEDED,
+      'Report run capacity is temporarily exhausted',
+      { retryable: true },
+    );
   }
 
   claim(runId: string): RunningReportRun {
